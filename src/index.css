@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-github-gray-50 text-github-gray-900 antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold leading-tight;
+  }
+  
+  h1 {
+    @apply text-2xl;
+  }
+  
+  h2 {
+    @apply text-xl;
+  }
+  
+  h3 {
+    @apply text-lg;
+  }
+
+  button, a {
+    @apply transition-colors duration-200;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-1.5 text-sm font-medium rounded;
+  }
+  
+  .btn-primary {
+    @apply btn bg-github-green text-white hover:bg-github-green-dark;
+  }
+  
+  .btn-secondary {
+    @apply btn bg-github-gray-100 text-github-gray-800 hover:bg-github-gray-200;
+  }
+  
+  .btn-danger {
+    @apply btn bg-github-red text-white hover:bg-github-red-dark;
+  }
+  
+  .card {
+    @apply bg-white border border-github-gray-200 rounded-md shadow-github-md;
+  }
+  
+  .nav-item {
+    @apply flex items-center px-3 py-2 text-sm text-github-gray-600 hover:bg-github-gray-100 rounded-md;
+  }
+  
+  .nav-item.active {
+    @apply bg-github-gray-100 text-github-gray-900;
+  }
+}
