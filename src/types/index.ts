@@ -1,3 +1,5 @@
+import { Repository } from '@supabase/supabase-js';
+
 export type User = {
   id: string;
   name: string;
@@ -35,4 +37,17 @@ export type Execution = {
   completedAt?: string;
   logs: string[];
   success?: boolean;
+};
+
+export type GitHubPullRequest = {
+  number: number;
+  title: string;
+  html_url: string;
+  state: string;
+  created_at: string;
+  updated_at: string;
+  user: {
+    login: string;
+    avatar_url: string;
+  };
 };

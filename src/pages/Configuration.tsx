@@ -8,15 +8,21 @@ import {
   Webhook, 
   Lock,
   Settings,
-  Server
+  Server,
+  ExternalLink
 } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
 import { cn } from '../utils/cn';
+import { useApp } from '../context/AppContext';
+import AddRepositoryDialog from '../components/AddRepositoryDialog';
 
 const Configuration: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('general');
+  const { repositories, addRepository, removeRepository } = useApp();
+  const [activeTab, setActiveTab] = useState('repositories');
   const [apiKey, setApiKey] = useState('');
   const [showApiKey, setShowApiKey] = useState(false);
   const [webhookUrl, setWebhookUrl] = useState('https://app.codereview.dev/webhook/github');
+  const [isAddRepoOpen, setIsAddRepoOpen] = useState(false);
   
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -90,7 +96,7 @@ const Configuration: React.FC = () => {
                   type="text"
                   id="appName"
                   className="block w-full border border-github-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-github-blue focus:border-github-blue"
-                  defaultValue="GitHub Code Review"
+                  defaultValue="PR Police"
                 />
               </div>
               
@@ -297,49 +303,78 @@ const Configuration: React.FC = () => {
             <div>
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold">Configured Repositories</h2>
-                <button className="btn-primary">
+                <button 
+                  className="btn-primary"
+                  onClick={() => setIsAddRepoOpen(true)}
+                >
                   <Plus size={16} className="mr-1" />
                   Add Repository
                 </button>
               </div>
               
-              <div className="bg-github-gray-50 p-6 border border-github-gray-200 rounded-md text-center">
-                <Server size={32} className="mx-auto text-github-gray-400 mb-3" />
-                <h3 className="font-medium text-github-gray-700">No repositories configured</h3>
-                <p className="text-github-gray-500 mt-1 mb-4">
-                  Add a repository to start receiving code review notifications.
-                </p>
-                <button className="btn-primary">
-                  <Plus size={16} className="mr-1" />
-                  Add Repository
-                </button>
-              </div>
-              
-              <div className="hidden mt-6">
+              {repositories.length === 0 ? (
+                <div className="bg-github-gray-50 p-6 border border-github-gray-200 rounded-md text-center">
+                  <Server size={32} className="mx-auto text-github-gray-400 mb-3" />
+                  <h3 className="font-medium text-github-gray-700">No repositories configured</h3>
+                  <p className="text-github-gray-500 mt-1 mb-4">
+                    Add a repository to start receiving code review notifications.
+                  </p>
+                  <button 
+                    className="btn-primary"
+                    onClick={() => setIsAddRepoOpen(true)}
+                  >
+                    <Plus size={16} className="mr-1" />
+                    Add Repository
+                  </button>
+                </div>
+              ) : (
                 <div className="border border-github-gray-200 rounded-md divide-y divide-github-gray-200">
-                  <div className="p-4 flex items-center justify-between">
-                    <div className="flex items-center">
-                      <Github size={18} className="text-github-gray-600 mr-3" />
-                      <div>
-                        <div className="font-medium">johndoe/awesome-app</div>
-                        <div className="text-sm text-github-gray-500">Last execution: 2 hours ago</div>
+                  {repositories.map(repo => (
+                    <div key={repo.id} className="p-4 flex items-center justify-between">
+                      <div className="flex items-center">
+                        <Github size={18} className="text-github-gray-600 mr-3" />
+                        <div>
+                          <div className="font-medium flex items-center">
+                            {repo.owner}/{repo.name}
+                            <a
+                              href={repo.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="ml-2 text-github-gray-400 hover:text-github-gray-600"
+                            >
+                              <ExternalLink size={14} />
+                            </a>
+                          </div>
+                          <div className="text-sm text-github-gray-500">
+                            Added {formatDistanceToNow(new Date(repo.createdAt), { addSuffix: true })}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex space-x-2">
+                        <button className="p-2 text-github-gray-500 hover:text-github-gray-700 hover:bg-github-gray-100 rounded-md">
+                          <Settings size={16} />
+                        </button>
+                        <button 
+                          className="p-2 text-github-red hover:text-github-red-dark hover:bg-github-gray-100 rounded-md"
+                          onClick={() => removeRepository(repo.id)}
+                        >
+                          <Trash2 size={16} />
+                        </button>
                       </div>
                     </div>
-                    <div className="flex space-x-2">
-                      <button className="p-2 text-github-gray-500 hover:text-github-gray-700 hover:bg-github-gray-100 rounded-md">
-                        <Settings size={16} />
-                      </button>
-                      <button className="p-2 text-github-red hover:text-github-red-dark hover:bg-github-gray-100 rounded-md">
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  </div>
+                  ))}
                 </div>
-              </div>
+              )}
             </div>
           )}
         </div>
       </div>
+
+      <AddRepositoryDialog
+        isOpen={isAddRepoOpen}
+        onClose={() => setIsAddRepoOpen(false)}
+        onAdd={addRepository}
+      />
     </div>
   );
 };
