@@ -35,7 +35,7 @@ const Sidebar: React.FC = () => {
         </NavLink>
         
         <NavLink
-          to="/execution"
+          to="/pull-requests"
           className={({ isActive }) => 
             `nav-item mt-2 ${isActive ? 'active' : ''} ${!sidebarOpen && 'justify-center'}`
           }
@@ -88,7 +88,7 @@ const Sidebar: React.FC = () => {
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-github-gray-200 bg-github-gray-50">
           <div className="flex items-center text-sm text-github-gray-600">
             <Shield size={18} className="mr-2 text-github-gray-500" />
-            <span className="truncate">GitHub Code Review v0.1.0</span>
+            <span className="truncate">PR Police v0.1.0</span>
           </div>
         </div>
       )}
