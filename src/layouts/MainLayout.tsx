@@ -12,7 +12,11 @@ const MainLayout: React.FC = () => {
       <Header />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-        <main className={`flex-1 overflow-auto transition-all duration-200 ${sidebarOpen ? 'pl-[250px]' : 'pl-0 md:pl-[60px]'}`}>
+        <main 
+          className={`flex-1 overflow-auto transition-all duration-200 ${
+            sidebarOpen ? 'pl-[250px]' : 'pl-0 md:pl-[60px]'
+          }`}
+        >
           <div className="container mx-auto px-4 py-6 max-w-7xl">
             <Outlet />
           </div>

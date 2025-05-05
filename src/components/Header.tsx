@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, Bell, Github as GitHub, X, Check } from 'lucide-react';
+import { Menu, Bell, Shield, X, Check } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { formatDistanceToNow } from 'date-fns';
 import { cn } from '../utils/cn';
@@ -39,8 +39,8 @@ const Header: React.FC = () => {
         </button>
         
         <Link to="/" className="ml-4 flex items-center">
-          <GitHub size={24} className="mr-2" />
-          <span className="font-semibold text-lg hidden md:block">Code Review</span>
+          <Shield size={24} className="mr-2" />
+          <span className="font-semibold text-lg hidden md:block">PR Police</span>
         </Link>
       </div>
       
